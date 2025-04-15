@@ -230,7 +230,7 @@ repeat
                 BodyVelocity.Velocity = Vector3.new(0, 0, 0)
 
                 ToggleNoclip(true)
-                TeleportTo(CFrame.new(Position.X, Position.Y - 15, Position.Z))
+                TeleportTo(CFrame.new(Position.X, Position.Y - 8, Position.Z))
 
                 task.wait(.2)
                 fireproximityprompt(ProximityPrompt)
