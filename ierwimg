@@ -112,7 +112,7 @@ local function HasMaxItem(Item)
 
     for _, Tool in pairs(Player.Backpack:GetChildren()) do
         if Tool.Name == Item then
-            Count += 1
+            Count = 1
         end
     end
 
@@ -228,7 +228,7 @@ repeat
                 BodyVelocity.Velocity = Vector3.new(0, 0, 0)
 
                 ToggleNoclip(true)
-                TeleportTo(CFrame.new(Position.X, Position.Y + 25, Position.Z))
+                TeleportTo(CFrame.new(Position.X, Position.Y - 15, Position.Z))
 
                 task.wait(.2)
                 fireproximityprompt(ProximityPrompt)
