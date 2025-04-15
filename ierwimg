@@ -76,8 +76,8 @@ local function ToggleNoclip(Value)
 
     if Character then
         for _, Child in pairs(Character:GetDescendants()) do
-            if Child:IsA("BasePart") and Child.CanCollide == not Value then
-                Child.CanCollide = Value
+            if Child:IsA("BasePart") then
+                Child.CanCollide = not Value
             end
         end
     end
