@@ -119,16 +119,18 @@ end
 local function HasMaxItem(Item)
     local Count = 0
 
+    -- Count the items in the player's backpack
     for _, Tool in pairs(Player.Backpack:GetChildren()) do
         if Tool.Name == Item then
-            Count = 1
+            Count = Count + 1
         end
     end
 
+    -- If the item is in the MaxItemAmounts table, check if the count exceeds or is equal to the max amount
     if MaxItemAmounts[Item] then
         return Count >= MaxItemAmounts[Item]
     else
-        warn("Item not found in the table: " .. Item)
+        warn("Item not found in MaxItemAmounts table: " .. Item)
         return false
     end
 end
@@ -168,7 +170,7 @@ ItemSpawnFolder.ChildAdded:Connect(function(Model)
     end
 end)
 
-local UzuKeeIsRetardedAndDoesntKnowHowToMakeAnAntiCheatOnTheServerSideAlsoVexStfuIKnowTheCodeIsBadYouDontNeedToTellMe = "  ___XP DE KEY"
+local UzuKeeIsRetarded = "  ___XP DE KEY"
 
 -- Namecall Hook (TP Bypass) --
 local oldNc
@@ -177,7 +179,7 @@ oldNc = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
     local Args = {...}
 
     if not checkcaller() and rawequal(self.Name, "Returner") and rawequal(Args[1], "idklolbrah2de") then
-        return UzuKeeIsRetardedAndDoesntKnowHowToMakeAnAntiCheatOnTheServerSideAlsoVexStfuIKnowTheCodeIsBadYouDontNeedToTellMe
+        return UzuKeeIsRetarded
     end
 
     return oldNc(self, ...)
@@ -219,16 +221,19 @@ repeat
         if HumanoidRootPart then
             local Name = ItemInfo.Name
 
+            -- Check if the player has maxed out the item
             local HasMax = HasMaxItem(Name)
 
             if not HasMax then
+                -- Proceed to collect the item if it's not maxed out
                 local ProximityPrompt = ItemInfo.ProximityPrompt
                 local Position = ItemInfo.Position
 
+                -- Remove the item from SpawnedItems so we don't process it again
                 table.remove(getgenv().SpawnedItems, table.find(getgenv().SpawnedItems, ItemInfo))
 
                 if not ProximityPrompt.Parent then
-                    print("Why does this " .. ItemInfo.Name .. " prompt not have a parent bro")
+                    print("Warning: ProximityPrompt not parented for " .. ItemInfo.Name)
                     continue
                 end
 
@@ -237,23 +242,24 @@ repeat
                 BodyVelocity.Velocity = Vector3.new(0, 0, 0)
 
                 ToggleNoclip(true)
-		TeleportTo(CFrame.new(Position.X, Position.Y - 8, Position.Z))
-		ResetHumanoidState()
+                TeleportTo(CFrame.new(Position.X, Position.Y - 20, Position.Z))
+		task.wait(0.3)
+                ResetHumanoidState()
 
-		task.wait(0.2)
-		fireproximityprompt(ProximityPrompt)
-		ProximityPrompt.Destroying:Wait()
+                task.wait(0.2)
+                fireproximityprompt(ProximityPrompt)
+                ProximityPrompt.Destroying:Wait()
 
-		BodyVelocity:Destroy()
+                BodyVelocity:Destroy()
 
-		ToggleNoclip(false)
-		TeleportTo(CFrame.new(978, -42, -49))
-		ResetHumanoidState()
-
+                ToggleNoclip(false)
+                TeleportTo(CFrame.new(978, -42, -49))
+                ResetHumanoidState()
 
                 print("Collected an item: " .. Name)
             else
                 table.remove(getgenv().SpawnedItems, table.find(getgenv().SpawnedItems, ItemInfo))
+                print("Skipped " .. Name .. " as it's maxed out.")
             end
         end
     end
